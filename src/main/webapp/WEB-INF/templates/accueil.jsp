@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h1>${requestScope["title"] big boss</h1>
+    <h1>${requestScope["title"]} big boss</h1>
     <form>
         <input type="type" name="nom"></input>
         <input type="submit"></input>
