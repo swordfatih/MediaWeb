@@ -17,27 +17,11 @@ public class MediaWeb extends HttpServlet {
         throws IOException, ServletException
     {
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
 
-        out.println("<html>");
-        out.println("<head>");
+	    request.setAttribute("title", "bonjour jeff");
+        request.setAttribute("nom", request.getParameter("nom"));
 
-	    String title = "bonjour jeff";
-
-	    out.println("<title>" + title + "</title>");
-        out.println("</head>");
-        out.println("<body bgcolor=\"white\">");
-
-        out.println("<h1>" + title + " big boss" + "</h1>");
-
-        out.println("<form><input type=\"type\" name=\"nom\"></input><input type=\"submit\"></input></form>");
-
-        out.println("<p>" + request.getParameter("nom") + "</p>");
-
-        out.println("</body>");
-        out.println("</html>");
-
-        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/sample.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/accueil.jsp");
         view.forward(request, response);
     }
 }
