@@ -18,7 +18,7 @@ public class MediaWeb extends HttpServlet {
     {
         response.setContentType("text/html");
 
-	    request.setAttribute("title", "bonjour jeff");
+	    request.setAttribute("title", "bonjour jeffff");
         request.setAttribute("nom", request.getParameter("nom"));
 
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/accueil.jsp");
