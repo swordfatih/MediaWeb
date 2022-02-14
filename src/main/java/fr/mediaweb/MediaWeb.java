@@ -15,7 +15,7 @@ public class MediaWeb extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
                          HttpServletResponse response)
         throws IOException, ServletException
-    { 
+    {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -29,8 +29,15 @@ public class MediaWeb extends HttpServlet {
         out.println("<body bgcolor=\"white\">");
 
         out.println("<h1>" + title + " big boss" + "</h1>");
+
+        out.println("<form><input type=\"type\" name=\"nom\"></input><input type=\"submit\"></input></form>");
+
+        out.println("<p>" + request.getParameter("nom") + "</p>");
+
         out.println("</body>");
         out.println("</html>");
-    }
 
+        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/sample.jsp");
+        view.forward(request, response);
+    }
 }
