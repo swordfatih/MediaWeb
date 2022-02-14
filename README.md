@@ -1,2 +1,2 @@
-# JavaEE-Mediatek
+# JavaEE Médiathèque
 Projet en JavaEE
