@@ -1,5 +1,6 @@
 package fr.mediaweb.persistance;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.sql.*;
 import mediatek2022.*;
@@ -31,7 +32,29 @@ public class MediathequeData implements PersistentMediatheque {
 	// renvoie la liste de tous les documents disponibles de la médiathèque
 	@Override
 	public List<Document> tousLesDocumentsDisponibles() {
-		return null;
+		List<Document> documents = new ArrayList<>();
+
+		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document";
+
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet res = stmt.executeQuery(req);
+
+			while(res.next()) {
+				documents.add(new MediathequeDocument(res.getString(1),
+						res.getString(2),
+						res.getString(3),
+						res.getInt(4),
+						res.getString(5)));
+			}
+
+			res.close();
+			stmt.close();
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+
+		return documents;
 	}
 
 	// va récupérer le User dans la BD et le renvoie

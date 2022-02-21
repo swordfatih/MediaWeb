@@ -21,25 +21,3 @@ public class Authentification extends HttpServlet {
         view.forward(request, response);
     }
 }
-
-
-/*
-    public static ArrayList<String> connect() throws SQLException, ClassNotFoundException {
-
-
-        ArrayList<String> utilisateurs = new ArrayList<>();
-        req1 = "SELECT `login` FROM utilisateur";
-        Statement st1 = conn.createStatement();
-        ResultSet RS1 = st1.executeQuery(req1);
-
-        while(RS1.next()) {
-            String login = RS1.getString(1);
-            utilisateurs.add(login);
-        }
-
-        RS1.close();
-        st1.close();
-
-        return utilisateurs;
-    }
- */
