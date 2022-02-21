@@ -25,14 +25,7 @@ public class Authentification extends HttpServlet {
 
 /*
     public static ArrayList<String> connect() throws SQLException, ClassNotFoundException {
-        String url, user, password, req1;
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
-
-        url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
-        user = "vmvo1438_mediaweb";
-        password = "mediaweb4568";
-        Connection conn = DriverManager.getConnection(url, user, password);
 
         ArrayList<String> utilisateurs = new ArrayList<>();
         req1 = "SELECT `login` FROM utilisateur";

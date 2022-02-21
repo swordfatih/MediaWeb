@@ -1,19 +1,31 @@
 package fr.mediaweb.persistance;
 
 import java.util.List;
+import java.sql.*;
 import mediatek2022.*;
 
 // classe mono-instance dont l'unique instance est connue de la médiatheque
 // via une auto-déclaration dans son bloc static
 
 public class MediathequeData implements PersistentMediatheque {
-	// Jean-François Brette 01/01/2018
+	private static final String url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
+	private static final String user = "vmvo1438_mediaweb";
+	private static final String password = "mediaweb4568";
+	private Connection conn;
+
 	static {
-		Mediatheque.getInstance().setData(new MediathequeData());
+		try {
+			Mediatheque.getInstance().setData(new MediathequeData());
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
 	}
 
-	private MediathequeData() {
-
+	private MediathequeData() throws ClassNotFoundException, SQLException {
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		this.conn = DriverManager.getConnection(url, user, password);
 	}
 
 	// renvoie la liste de tous les documents disponibles de la médiathèque

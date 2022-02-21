@@ -15,8 +15,6 @@ public class Gestionnaire extends HttpServlet {
     {
         response.setContentType("text/html");
 
-        // request.setAttribute("nom", request.getParameter("nom"));
-
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/gestionnaire.jsp");
         view.forward(request, response);
     }
