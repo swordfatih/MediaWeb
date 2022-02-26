@@ -1,0 +1,4 @@
+target/
+.idea/
+buildAndRun.sh
+Dockerfile
