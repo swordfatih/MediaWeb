@@ -113,15 +113,13 @@ public class MediathequeData implements PersistentMediatheque {
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
 
-		String req = "INSERT INTO document ()`titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d`) VALUES (?, ?, ?, ?, ?);";
+		String req = "INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);";
 
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
 			stmt.setString(1, (String) args[0]);
 			stmt.setString(2, (String) args[1]);
 			stmt.setString(3, (String) args[2]);
-			stmt.setString(4, (String) args[3]);
-			stmt.setString(5, (String) args[4]);
 			
 			stmt.execute();
 			

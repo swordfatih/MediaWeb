@@ -5,7 +5,10 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import fr.mediaweb.persistance.MediathequeDocument;
 import fr.mediaweb.persistance.MediathequeUtilisateur;
+import mediatek2022.Document;
+import mediatek2022.Mediatheque;
 
 import java.io.IOException;
 
@@ -35,6 +38,26 @@ public class Gestionnaire extends HttpServlet {
     {
     	if(request.getParameter("deconnexion") != null) {
     		request.getSession().setAttribute("utilisateur", null);
+    	} else if(request.getParameter("ajouter") != null) {
+			try {
+				Mediatheque.getInstance().ajoutDocument(0, request.getParameter("titre"), request.getParameter("auteur"), request.getParameter("type"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	} else if(request.getParameter("emprunt") != null) {
+    		try {
+    			Document document = Mediatheque.getInstance().getDocument(Integer.parseInt(request.getParameter("id_d")));
+				Mediatheque.getInstance().emprunt(document, (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	} else if(request.getParameter("retour") != null) { 
+			try {
+				Document document = Mediatheque.getInstance().getDocument(Integer.parseInt(request.getParameter("id_d")));
+				Mediatheque.getInstance().retour(document, (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur"));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
     	}
     	
     	doGet(request, response);

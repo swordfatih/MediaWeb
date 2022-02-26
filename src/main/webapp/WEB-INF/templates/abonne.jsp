@@ -12,7 +12,7 @@
 	<h2>Salutations cher ${requestScope["nom_u"]}</h2>
 	
 	<form method="post">
-	    <input type="text" name="titre" placeholder="Titre du document"></input>
+	    <input type="number" name="id_d" placeholder="Numero du document"></input>
 	    <input type="submit" name="emprunt" value="Emprunt"></input>
 	    <input type="submit" name="retour" value="Retour"></input>
 	</form>
