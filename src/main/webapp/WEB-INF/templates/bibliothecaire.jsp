@@ -23,7 +23,7 @@
 	</form>
 	
 	<form method="post">
-	    <input type="submit" name="deconnexion" value="Ajouter"></input>
+	    <input type="submit" name="deconnexion" value="Deconnecter"></input>
 	</form>
 </body>
 </html>

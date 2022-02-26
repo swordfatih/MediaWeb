@@ -22,7 +22,7 @@ public class MediathequeUtilisateur implements Utilisateur {
 
     @Override
     public boolean isBibliothecaire() {
-        return type == "bibliothecaire";
+        return type.equals("bibliothecaire");
     }
 
     @Override

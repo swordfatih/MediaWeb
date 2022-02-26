@@ -16,5 +16,9 @@
 	    <input type="submit" name="emprunt" value="Emprunt"></input>
 	    <input type="submit" name="retour" value="Retour"></input>
 	</form>
+	
+	<form method="post">
+	    <input type="submit" name="deconnexion" value="Deconnecter"></input>
+	</form>
 </body>
 </html>
