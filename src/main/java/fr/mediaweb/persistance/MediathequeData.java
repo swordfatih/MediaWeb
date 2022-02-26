@@ -34,7 +34,7 @@ public class MediathequeData implements PersistentMediatheque {
 	public List<Document> tousLesDocumentsDisponibles() {
 		List<Document> documents = new ArrayList<>();
 
-		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document";
+		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;";
 
 		try {
 			Statement stmt = conn.createStatement();
@@ -59,7 +59,7 @@ public class MediathequeData implements PersistentMediatheque {
 	public Utilisateur getUser(String login, String password) {
 		MediathequeUtilisateur utilisateur = null;
 		
-		String req = "SELECT `nom_u`, `login`, `mdp`, `type_u` FROM user WHERE `login`=?, `mdp`=?";
+		String req = "SELECT `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
@@ -87,7 +87,7 @@ public class MediathequeData implements PersistentMediatheque {
 	public Document getDocument(int numDocument) {
 		MediathequeDocument document = null;
 		
-		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?";
+		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
@@ -113,7 +113,7 @@ public class MediathequeData implements PersistentMediatheque {
 		// args [1] --> l'auteur
 		// etc... variable suivant le type de document
 
-		String req = "INSERT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` INTO Document VALUES ?, ?, ?, ?, ?";
+		String req = "INSERT INTO document ()`titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d`) VALUES (?, ?, ?, ?, ?);";
 
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
