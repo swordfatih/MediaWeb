@@ -44,7 +44,7 @@ public class Authentification extends HttpServlet {
             view.forward(request, response);
         }
         
-        request.setAttribute("connexion", false);
+        request.setAttribute("erreur", true);
         
         doGet(request, response);
     }

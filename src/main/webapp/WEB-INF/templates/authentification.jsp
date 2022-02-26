@@ -15,7 +15,7 @@
     <input type="submit" valeur="Se connecter"></input>
 </form>
 
-${requestScope["connexion"]}
+${requestScope["erreur"] ? "Votre connexion a échouée" : ""}
 </body>
 
 </html>
