@@ -47,7 +47,7 @@ public class MediathequeDocument implements Document {
 			stmt.setString(1, utilisateur.name());
 			stmt.setInt(2, id);
 			
-			ResultSet res = stmt.executeQuery();
+			stmt.execute();
 
 			stmt.close();
 		} catch (SQLException throwables) {
