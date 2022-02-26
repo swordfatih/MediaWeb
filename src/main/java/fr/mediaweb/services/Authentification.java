@@ -25,6 +25,11 @@ public class Authentification extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
         response.setContentType("text/html");
+        
+        if(request.getSession().getAttribute("utilisateur") != null) {
+        	RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/gestionnaire.jsp");
+            view.forward(request, response);
+        }
 
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/authentification.jsp");
         view.forward(request, response);
@@ -38,14 +43,12 @@ public class Authentification extends HttpServlet {
         String mdp = request.getParameter("mdp");
         
         Utilisateur utilisateur = Mediatheque.getInstance().getUser(login, mdp);
-        
-        if(utilisateur != null) {
-        	RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/gestionnaire.jsp");
-            view.forward(request, response);
+        request.getSession().setAttribute("utilisateur", utilisateur);
+
+        if(utilisateur == null) {
+        	request.setAttribute("erreur", true);
         }
-        
-        request.setAttribute("erreur", true);
-        
+               
         doGet(request, response);
     }
 }

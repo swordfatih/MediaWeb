@@ -8,7 +8,9 @@
 </head>
 
 <body>
-<h1>Gestionnaire des documents</h1>
+<h1>Gestionnaire des documents, salutation cher ${requestScope["nom_u"]}</h1>
+
+
 </body>
 
 </html>
