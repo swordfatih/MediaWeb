@@ -4,17 +4,17 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Sample Page</title>
+    <title>Gestionnaire - Abonne</title>
 </head>
 
 <body>
-	<h1>Authentification</h1>
-	<form method="post">
-	    <input type="text" name="login" placeholder="Votre login"></input>
-	    <input type="text" name="mdp" placeholder="Votre mot de passe"></input>
-	    <input type="submit" valeur="Se connecter"></input>
-	</form>
+	<h1>Emprunts et retours</h1>
+	<h2>Salutations cher ${requestScope["nom_u"]}</h2>
 	
-	${requestScope["connexion"]?"":"Votre connexion a échouée"}
+	<form method="post">
+	    <input type="text" name="titre" placeholder="Titre du document"></input>
+	    <input type="submit" name="emprunt" valeur="Emprunt"></input>
+	    <input type="submit" name="retour" valeur="Retour"></input>
+	</form>
 </body>
 </html>

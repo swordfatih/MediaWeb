@@ -18,9 +18,10 @@ public class Gestionnaire extends HttpServlet {
     {
         response.setContentType("text/html");
         
-        request.setAttribute("nom_u", ((MediathequeUtilisateur) request.getSession().getAttribute("utilisateur")).name());
-
-        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/gestionnaire.jsp");
+        MediathequeUtilisateur utilisateur = (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur");
+        request.setAttribute("nom_u", utilisateur.name());
+        
+        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/" + (utilisateur.isBibliothecaire() ? "bibliothecaire" : "abonne") + ".jsp");
         view.forward(request, response);
     }
 }
