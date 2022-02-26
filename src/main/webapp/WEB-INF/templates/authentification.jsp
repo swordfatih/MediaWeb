@@ -4,7 +4,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Sample Page</title>
+    <title>Authentification</title>
 </head>
 
 <body>
@@ -15,6 +15,6 @@
 	    <input type="submit" valeur="Se connecter"></input>
 	</form>
 	
-	${requestScope["connexion"]?"":"Votre connexion a échouée"}
+	${requestScope["erreur"] ? "Votre connexion a échouée" : ""}
 </body>
 </html>

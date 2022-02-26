@@ -13,8 +13,8 @@
 	
 	<form method="post">
 	    <input type="text" name="titre" placeholder="Titre du document"></input>
-	    <input type="submit" name="emprunt" valeur="Emprunt"></input>
-	    <input type="submit" name="retour" valeur="Retour"></input>
+	    <input type="submit" name="emprunt" value="Emprunt"></input>
+	    <input type="submit" name="retour" value="Retour"></input>
 	</form>
 </body>
 </html>
