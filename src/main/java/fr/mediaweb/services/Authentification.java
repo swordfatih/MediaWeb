@@ -26,6 +26,7 @@ public class Authentification extends HttpServlet {
     {
     	if(request.getSession().getAttribute("utilisateur") != null) {
         	response.sendRedirect("/gest");
+        	return;
         }
     	
         response.setContentType("text/html");
@@ -36,8 +37,6 @@ public class Authentification extends HttpServlet {
     
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        response.setContentType("text/html");
-
         String login = request.getParameter("login");
         String mdp = request.getParameter("mdp");
         
