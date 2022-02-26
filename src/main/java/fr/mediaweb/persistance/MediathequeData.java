@@ -34,14 +34,14 @@ public class MediathequeData implements PersistentMediatheque {
 	public List<Document> tousLesDocumentsDisponibles() {
 		List<Document> documents = new ArrayList<>();
 
-		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;";
+		String req = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;";
 
 		try {
 			Statement stmt = conn.createStatement();
 			ResultSet res = stmt.executeQuery(req);
 
 			while (res.next()) {
-				documents.add(new MediathequeDocument(res.getString(1), res.getString(2), res.getString(3), res.getInt(4), res.getString(5)));
+				documents.add(new MediathequeDocument(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getInt(5), res.getString(6)));
 			}
 
 			res.close();
@@ -59,7 +59,7 @@ public class MediathequeData implements PersistentMediatheque {
 	public Utilisateur getUser(String login, String password) {
 		MediathequeUtilisateur utilisateur = null;
 		
-		String req = "SELECT `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;";
+		String req = "SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
@@ -69,7 +69,7 @@ public class MediathequeData implements PersistentMediatheque {
 			ResultSet res = stmt.executeQuery();
 			
 			while(res.next())
-				utilisateur = new MediathequeUtilisateur(res.getString(1), res.getString(2), res.getString(3), res.getString(4));
+				utilisateur = new MediathequeUtilisateur(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getString(5));
 
 			res.close();
 			stmt.close();
@@ -87,7 +87,7 @@ public class MediathequeData implements PersistentMediatheque {
 	public Document getDocument(int numDocument) {
 		MediathequeDocument document = null;
 		
-		String req = "SELECT `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;";
+		String req = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
@@ -96,7 +96,7 @@ public class MediathequeData implements PersistentMediatheque {
 			ResultSet res = stmt.executeQuery();
 			
 			while(res.next())
-				document = new MediathequeDocument(res.getString(1), res.getString(2), res.getString(3), res.getInt(4), res.getString(5));
+				document = new MediathequeDocument(res.getInt(1), res.getString(2), res.getString(3), res.getString(4), res.getInt(5), res.getString(6));
 
 			res.close();
 			stmt.close();

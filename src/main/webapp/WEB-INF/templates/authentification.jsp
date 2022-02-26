@@ -12,7 +12,7 @@
 	<form method="post">
 	    <input type="text" name="login" placeholder="Votre login"></input>
 	    <input type="text" name="mdp" placeholder="Votre mot de passe"></input>
-	    <input type="submit" valeur="Se connecter"></input>
+	    <input type="submit" value="Se connecter"></input>
 	</form>
 	
 	${requestScope["erreur"] ? "Votre connexion a échouée" : ""}
