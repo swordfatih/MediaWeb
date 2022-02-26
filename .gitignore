@@ -5,6 +5,6 @@ bin/
 .settings/
 .project
 .classpath
-
 target/*
 !target/*.war
+/target/

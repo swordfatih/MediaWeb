@@ -12,6 +12,13 @@ import java.io.IOException;
 
 @WebServlet(name = "Authentification", value = "/")
 public class Authentification extends HttpServlet {
+	static {
+	    try {
+			Class.forName("fr.mediaweb.persistance.MediathequeData");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
 
     private static final long serialVersionUID = 1L;
 
