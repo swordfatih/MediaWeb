@@ -42,21 +42,35 @@ public class MediathequeDocument implements Document {
     	
 		String req = "UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;";
 		
-		try {
-			PreparedStatement stmt = conn.prepareStatement(req);
-			stmt.setString(1, utilisateur.name());
-			stmt.setInt(2, id);
-			
-			stmt.execute();
+		PreparedStatement stmt = conn.prepareStatement(req);
+		stmt.setString(1, utilisateur.name());
+		stmt.setInt(2, id);
+		
+		stmt.execute();
 
-			stmt.close();
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
+		stmt.close();
     }
 
     @Override
     public void retour() {
-		
+    	String url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
+    	String user = "vmvo1438_mediaweb";
+    	String password = "mediaweb4568";
+
+    	try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+	    	Connection conn = DriverManager.getConnection(url, user, password);
+	    	
+			String req = "UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;";
+			
+			PreparedStatement stmt = conn.prepareStatement(req);
+			stmt.setInt(1, id);
+			
+			stmt.execute();
+
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 }
