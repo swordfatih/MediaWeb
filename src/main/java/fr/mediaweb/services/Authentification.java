@@ -25,7 +25,7 @@ public class Authentification extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
     	if(request.getSession().getAttribute("utilisateur") != null) {
-        	response.sendRedirect("/gest");
+        	response.sendRedirect("/MediaWeb/gest");
         	return;
         }
     	
