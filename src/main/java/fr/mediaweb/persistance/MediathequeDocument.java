@@ -40,7 +40,7 @@ public class MediathequeDocument implements Document {
     	Class.forName("com.mysql.cj.jdbc.Driver");
     	Connection conn = DriverManager.getConnection(url, user, password);
     	
-		String req = "UPDATE document, utilisateur SET `emprunt_d`=`u_id` WHERE `nom_u`=? AND `id_d`=?;";
+		String req = "UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;";
 		
 		try {
 			PreparedStatement stmt = conn.prepareStatement(req);
