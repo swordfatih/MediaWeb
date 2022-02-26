@@ -4,15 +4,11 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>Sample Page</title>
+    <title>Gestionnaire</title>
 </head>
 
 <body>
 <h1>Gestionnaire des documents, salutation cher ${requestScope["nom_u"]}</h1>
-
-
 </body>
 
 </html>
-
-<!-- \${requestScope["nom"]} -->
