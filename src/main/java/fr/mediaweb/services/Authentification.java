@@ -24,12 +24,12 @@ public class Authentification extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-        response.setContentType("text/html");
-        
-        if(request.getSession().getAttribute("utilisateur") != null) {
+    	if(request.getSession().getAttribute("utilisateur") != null) {
         	response.sendRedirect("/gest");
         }
-
+    	
+        response.setContentType("text/html");
+        
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/authentification.jsp");
         view.forward(request, response);
     }
