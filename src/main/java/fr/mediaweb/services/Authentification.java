@@ -27,7 +27,7 @@ public class Authentification extends HttpServlet {
         response.setContentType("text/html");
         
         if(request.getSession().getAttribute("utilisateur") != null) {
-        	response.setHeader("Location", "/gest");
+        	response.sendRedirect("/gest");
         }
 
         RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/authentification.jsp");
