@@ -19,7 +19,11 @@
 		    <option value="CD">CD</option>
 		    <option value="DVD">DVD</option>
 		</select>
-	    <input type="submit" valeur="Ajouter"></input>
+	    <input type="submit" name="Ajouter" value="Ajouter"></input>
+	</form>
+	
+	<form method="post">
+	    <input type="submit" name="deconnexion" value="Ajouter"></input>
 	</form>
 </body>
 </html>
