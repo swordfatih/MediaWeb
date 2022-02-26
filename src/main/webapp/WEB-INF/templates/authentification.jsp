@@ -9,11 +9,13 @@
 
 <body>
 <h1>Authentification</h1>
-<form>
-    <input type="type" name="nom" placeholder="Votre nom"></input>
+<form method="post">
+    <input type="type" name="login" placeholder="Votre login"></input>
     <input type="type" name="mdp" placeholder="Votre mot de passe"></input>
     <input type="submit" valeur="Se connecter"></input>
 </form>
+
+${requestScope["connexion"]}
 </body>
 
 </html>

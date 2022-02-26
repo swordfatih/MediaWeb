@@ -2,3 +2,8 @@ target/
 .idea/
 buildAndRun.sh
 Dockerfile
+bin/
+.settings/
+.project
+.classpath
+!target/MediaWeb.war

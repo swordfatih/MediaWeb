@@ -25,11 +25,11 @@ public class MediathequeDocument implements Document {
 
     @Override
     public void emprunt(Utilisateur utilisateur) throws Exception {
-
+    	
     }
 
     @Override
     public void retour() {
-
+		
     }
 }
