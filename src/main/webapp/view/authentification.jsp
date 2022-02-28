@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
@@ -22,7 +23,7 @@
 				<input type="text" name="mdp" placeholder="Votre mot de passe"></input>
 				<input type="submit" value="Se connecter"></input>
 			</form>
-			<p>${requestScope["erreur"] ? "Votre connexion a échouée" : ""}</p>
+			<p>${requestScope["erreur"] ? "" : ""}<c:out value="${ erreur }"></c:out></p>
 		</section>
 	</main>
 </body>

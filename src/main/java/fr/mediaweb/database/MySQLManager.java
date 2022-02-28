@@ -15,19 +15,20 @@ public class MySQLManager implements DataManager {
     private static final String user = "vmvo1438_mediaweb";
     private static final String password = "mediaweb4568";
 
-    private static Connection conn = null;
-
-    static {
+    public static Connection getConnection() {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(url, user, password);
+            return DriverManager.getConnection(url, user, password);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
     @Override
     public List<Document> tousLesDocumentsDisponibles() throws SQLException {
+        Connection conn = getConnection();
         Statement stmt = conn.createStatement();
         ResultSet res = stmt.executeQuery("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;");
 
@@ -40,28 +41,31 @@ public class MySQLManager implements DataManager {
 
         res.close();
         stmt.close();
+        conn.close();
 
         return documents;
     }
 
     @Override
     public Utilisateur getUser(String login, String password) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;");
         stmt.setString(1, login);
         stmt.setString(2, password);
 
-        return getUtilisateur(stmt);
+        return getUtilisateur(conn, stmt);
     }
 
     @Override
     public Utilisateur getUser(int id) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `id_u`=?;");
         stmt.setInt(1, id);
 
-        return getUtilisateur(stmt);
+        return getUtilisateur(conn, stmt);
     }
 
-    private Utilisateur getUtilisateur(PreparedStatement stmt) throws SQLException {
+    private Utilisateur getUtilisateur(Connection conn, PreparedStatement stmt) throws SQLException {
         ResultSet res = stmt.executeQuery();
 
         MediathequeUtilisateur utilisateur = res.next() ? new MediathequeUtilisateur(res.getInt(1),
@@ -72,12 +76,14 @@ public class MySQLManager implements DataManager {
 
         res.close();
         stmt.close();
+        conn.close();
 
         return utilisateur;
     }
 
     @Override
     public Integer getUserID(String nomUtilisateur) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT `id_u` FROM utilisateur WHERE `nom_u`=?;");
         stmt.setString(1, nomUtilisateur);
 
@@ -87,12 +93,14 @@ public class MySQLManager implements DataManager {
 
         res.close();
         stmt.close();
+        conn.close();
 
         return id;
     }
 
     @Override
     public Document getDocument(int numDocument) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;");
         stmt.setInt(1, numDocument);
 
@@ -107,12 +115,14 @@ public class MySQLManager implements DataManager {
 
         res.close();
         stmt.close();
+        conn.close();
 
         return document;
     }
 
     @Override
     public void ajoutDocument(int type, Object... args) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);");
         stmt.setString(1, (String) args[0]);
         stmt.setString(2, (String) args[1]);
@@ -120,30 +130,33 @@ public class MySQLManager implements DataManager {
 
         stmt.execute();
         stmt.close();
+        conn.close();
     }
 
     @Override
     public int emprunterDocument(int numDocument, String nomUtilisateur) throws SQLException {
         int id_u = getUserID(nomUtilisateur);
 
-        // UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;
-
-        PreparedStatement stmt = conn.prepareStatement("UPDATE documen SET `emprunt_d`=? WHERE `id_d`=?;");
+        Connection conn = getConnection();
+        PreparedStatement stmt = conn.prepareStatement("UPDATE document SET `emprunt_d`=? WHERE `id_d`=?;");
         stmt.setInt(1, id_u);
         stmt.setInt(2, numDocument);
 
         stmt.execute();
         stmt.close();
+        conn.close();
 
         return id_u;
     }
 
     @Override
     public void retournerDocument(int numDocument) throws SQLException {
+        Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;");
         stmt.setInt(1, numDocument);
 
         stmt.execute();
         stmt.close();
+        conn.close();
     }
 }

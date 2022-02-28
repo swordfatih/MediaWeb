@@ -27,6 +27,27 @@ public class MediathequeDocument implements Document {
         this.options = options;
     }
 
+    public int getID() {
+        return id;
+    }
+
+    public String getAuteur() {
+        return auteur;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getTitre()
+    {
+        return titre;
+    }
+
+    public int getEmprunt() {
+        return emprunt;
+    }
+
     @Override
     public boolean disponible() {
         return emprunt == -1;

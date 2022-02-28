@@ -14,7 +14,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Gestionnaire</servlet-name>
-        <url-pattern>/gest</url-pattern>
+        <url-pattern>/gestion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>default</servlet-name>

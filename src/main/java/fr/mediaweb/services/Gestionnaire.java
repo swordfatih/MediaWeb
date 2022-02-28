@@ -5,11 +5,15 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import fr.mediaweb.persistance.MediathequeDocument;
+import fr.mediaweb.persistance.MediathequeUtilisateur;
 import mediatek2022.Document;
 import mediatek2022.Mediatheque;
 import mediatek2022.Utilisateur;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @WebServlet(name = "Gestionnaire", value = "/gest")
 public class Gestionnaire extends HttpServlet {
@@ -27,8 +31,14 @@ public class Gestionnaire extends HttpServlet {
     	
         response.setContentType("text/html");
         
-        request.setAttribute("nom_u", utilisateur.name());
-        
+        request.setAttribute("utilisateur", utilisateur);
+
+		List<MediathequeDocument> documentsDisponibles = Mediatheque.getInstance().tousLesDocumentsDisponibles().stream().filter(d -> d.disponible()).map(d -> (MediathequeDocument) d).collect(Collectors.toList());
+		List<MediathequeDocument> documentsEmpruntes = Mediatheque.getInstance().tousLesDocumentsDisponibles().stream().map(d -> (MediathequeDocument) d).filter(d -> d.getEmprunt() == ((MediathequeUtilisateur) utilisateur).getID()).collect(Collectors.toList());
+
+		request.setAttribute("documentsDisponibles", documentsDisponibles);
+		request.setAttribute("documentsEmpruntes", documentsEmpruntes);
+
         RequestDispatcher view = request.getRequestDispatcher("view/" + (utilisateur.isBibliothecaire() ? "bibliothecaire" : "abonne") + ".jsp");
         view.forward(request, response);
     }

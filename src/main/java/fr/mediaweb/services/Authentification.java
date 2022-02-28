@@ -25,7 +25,7 @@ public class Authentification extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
     	if(request.getSession().getAttribute("utilisateur") != null) {
-        	response.sendRedirect("/MediaWeb/gest");
+        	response.sendRedirect("/MediaWeb/gestion");
         	return;
         }
     	
@@ -42,7 +42,8 @@ public class Authentification extends HttpServlet {
         
         Utilisateur utilisateur = Mediatheque.getInstance().getUser(login, mdp);
         request.getSession().setAttribute("utilisateur", utilisateur);
-        request.setAttribute("erreur", utilisateur == null);
+
+        if(utilisateur == null) request.setAttribute("erreur", "Votre connexion a échouée");
                
         doGet(request, response);
     }

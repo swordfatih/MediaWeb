@@ -17,6 +17,10 @@ public class MediathequeUtilisateur implements Utilisateur {
         this.type = type;
     }
 
+    public int getID() {
+        return id;
+    }
+
     @Override
     public String name() {
         return nom;
