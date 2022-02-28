@@ -5,10 +5,9 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import fr.mediaweb.persistance.MediathequeDocument;
-import fr.mediaweb.persistance.MediathequeUtilisateur;
 import mediatek2022.Document;
 import mediatek2022.Mediatheque;
+import mediatek2022.Utilisateur;
 
 import java.io.IOException;
 
@@ -19,7 +18,7 @@ public class Gestionnaire extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {
-    	MediathequeUtilisateur utilisateur = (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur");
+    	Utilisateur utilisateur = (Utilisateur) request.getSession().getAttribute("utilisateur");
     	
     	if(utilisateur == null) {
     		response.sendRedirect("/MediaWeb/");
@@ -30,7 +29,7 @@ public class Gestionnaire extends HttpServlet {
         
         request.setAttribute("nom_u", utilisateur.name());
         
-        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/" + (utilisateur.isBibliothecaire() ? "bibliothecaire" : "abonne") + ".jsp");
+        RequestDispatcher view = request.getRequestDispatcher("view/" + (utilisateur.isBibliothecaire() ? "bibliothecaire" : "abonne") + ".jsp");
         view.forward(request, response);
     }
     
@@ -47,14 +46,14 @@ public class Gestionnaire extends HttpServlet {
     	} else if(request.getParameter("emprunt") != null) {
     		try {
     			Document document = Mediatheque.getInstance().getDocument(Integer.parseInt(request.getParameter("id_d")));
-				Mediatheque.getInstance().emprunt(document, (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur"));
+				Mediatheque.getInstance().emprunt(document, (Utilisateur) request.getSession().getAttribute("utilisateur"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
     	} else if(request.getParameter("retour") != null) { 
 			try {
 				Document document = Mediatheque.getInstance().getDocument(Integer.parseInt(request.getParameter("id_d")));
-				Mediatheque.getInstance().retour(document, (MediathequeUtilisateur) request.getSession().getAttribute("utilisateur"));
+				Mediatheque.getInstance().retour(document, (Utilisateur) request.getSession().getAttribute("utilisateur"));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

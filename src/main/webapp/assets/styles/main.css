@@ -1,0 +1,137 @@
+@font-face {
+    font-family: "Summit Regular";
+    src: url("/MediaWeb/assets/fonts/SummitRegular-Solid.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Open Sans";
+    src: url("/MediaWeb/assets/fonts/OpenSans-Regular.ttf") format("truetype");
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url("/MediaWeb/assets/images/background.jpg");
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+main {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 50%;
+    height: 50%;
+    transform: translateX(-50%) translateY(-50%);
+
+    display: flex;
+    flex-direction: row;
+
+    color: white;
+    font-family: "Open Sans";
+}
+
+main > section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main > section:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    background-color: rgb(0, 0, 0, 70%);
+    width: 30%;
+    height: 100%;
+}
+
+main > section:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    background-color: rgb(0, 0, 0, 40%);
+    width: 70%;
+    height: 100%;
+}
+
+main > section > p, main > section > h1, main > section > h2 {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+main > section > h1 {
+    font-family: "Summit Regular";
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+
+    width: 80%;
+
+    margin-bottom: 5px;
+}
+
+form > *:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+form > *:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+form > input, form > input[type=submit], form > select, form > label {
+    background-color: rgb(0, 0, 0, 50%);
+
+    border: none;
+    color: white;
+
+    text-align: center;
+
+    width: 100%;
+    height: 40px;
+}
+
+form > select, form > label {
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+form > input[type=submit] {
+    cursor: pointer;
+    background-color: rgb(0, 0, 0, 70%);
+}
+
+form > input:hover, form > select:hover, form > input[type=submit]:hover, form > label:hover {
+    background-color: rgb(0, 0, 0, 80%);
+}
+
+@media screen and (max-width: 1200px) {
+    main {
+        width: 100%;
+        height: 100%;
+
+        flex-direction: column;
+    }
+
+    main > section:first-child {
+        border-radius: 0;
+        width: 100%;
+        height: 30%;
+    }
+
+    main > section:last-child {
+        border-radius: 0;
+        width: 100%;
+        height: 70%;
+    }
+}

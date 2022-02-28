@@ -31,7 +31,7 @@ public class Authentification extends HttpServlet {
     	
         response.setContentType("text/html");
         
-        RequestDispatcher view = request.getRequestDispatcher("WEB-INF/templates/authentification.jsp");
+        RequestDispatcher view = request.getRequestDispatcher("view/authentification.jsp");
         view.forward(request, response);
     }
     
