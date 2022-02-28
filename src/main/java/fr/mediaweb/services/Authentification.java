@@ -12,6 +12,8 @@ import java.io.IOException;
 
 @WebServlet(name = "Authentification", value = "/")
 public class Authentification extends HttpServlet {
+    private static final long serialVersionUID = 1L;
+
 	static {
 	    try {
 			Class.forName("fr.mediaweb.persistance.MediathequeData");
@@ -19,8 +21,6 @@ public class Authentification extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
-    private static final long serialVersionUID = 1L;
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
     {

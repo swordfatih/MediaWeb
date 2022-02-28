@@ -26,23 +26,6 @@ public class MediathequeDocument implements Document {
         this.options = options;
     }
 
-    public int getID() {
-        return id;
-    }
-
-    public String getAuteur() {
-        return auteur;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public String getTitre()
-    {
-        return titre;
-    }
-
     public int getEmprunt() {
         return emprunt;
     }
@@ -69,4 +52,18 @@ public class MediathequeDocument implements Document {
 			e.printStackTrace();
 		}
 	}
+
+    public String toString() {
+        StringBuilder affichage = new StringBuilder();
+
+        affichage.append(id);
+        affichage.append("[");
+        affichage.append(type);
+        affichage.append("] ");
+        affichage.append(auteur);
+        affichage.append(" - ");
+        affichage.append(titre);
+
+        return affichage.toString();
+    }
 }

@@ -16,7 +16,7 @@
 			<h1>MediaWeb</h1>
 
 			<h2>Espace bibliothécaire</h2>
-			<p>Salutations, <c:out value="${ utilisateur.name() }">Anonyme</c:out></p>
+			<p>Salutations, <c:out value="${ sessionScope.utilisateur.name().name() }">Anonyme</c:out></p>
 		</section>
 
 		<section>

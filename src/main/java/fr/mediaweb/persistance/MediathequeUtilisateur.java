@@ -1,24 +1,17 @@
 package fr.mediaweb.persistance;
 
+import mediatek2022.Mediatheque;
 import mediatek2022.Utilisateur;
 
 public class MediathequeUtilisateur implements Utilisateur {
     private final int id;
 	private final String nom;
-    private final String login;
-    private final String mdp;
     private final String type;
 
-    public MediathequeUtilisateur(int id, String nom, String login, String mdp, String type) {
+    public MediathequeUtilisateur(int id, String nom, String type) {
         this.id = id;
     	this.nom = nom;
-        this.login = login;
-        this.mdp = mdp;
         this.type = type;
-    }
-
-    public int getID() {
-        return id;
     }
 
     @Override
@@ -33,6 +26,10 @@ public class MediathequeUtilisateur implements Utilisateur {
 
     @Override
     public Object[] data() {
-        return new Object[0];
+        Object[] donnees = new Object[1];
+
+        donnees[0] = Mediatheque.getInstance().tousLesDocumentsDisponibles().stream().map(d -> (MediathequeDocument) d).filter(d -> d.getEmprunt() == id);
+
+        return donnees;
     }
 }

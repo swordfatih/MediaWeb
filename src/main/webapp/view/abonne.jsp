@@ -16,7 +16,7 @@
 			<h1>MediaWeb</h1>
 
 			<h2>Espace abonné</h2>
-			<p>Salutations, <c:out value="${ utilisateur.name() }">Anonyme</c:out></p>
+			<p>Salutations, <c:out value="${ sessionScope.utilisateur.name() }">Anonyme</c:out></p>
 		</section>
 
 		<section>
@@ -24,7 +24,7 @@
 			<form method="post">
 				<select name="id_d">
 					<c:forEach items="${ documentsDisponibles }" var="document" varStatus="status">
-						<option value="<c:out value="${ document.getID() }" />"><c:out value="[${document.getType()}] ${document.getAuteur()} - ${document.getTitre()}" /></option>
+						<option value="<c:out value="${ document.toString().substring(0, 1) }" />"><c:out value="${document.toString().substring(1)}" /></option>
 					</c:forEach>
 				</select>
 				<input type="submit" name="emprunt" value="Emprunter"></input>
@@ -34,7 +34,7 @@
 			<form method="post">
 				<select name="id_d">
 					<c:forEach items="${ documentsEmpruntes }" var="document" varStatus="status">
-						<option value="<c:out value="${ document.getID() }" />"><c:out value="[${document.getType()}] ${document.getAuteur()} - ${document.getTitre()}" /></option>
+						<option value="<c:out value="${ document.toString().substring(0, 1) }" />"><c:out value="${document.toString().substring(1)}" /></option>
 					</c:forEach>
 				</select>
 				<input type="submit" name="retour" value="Retourner"></input>

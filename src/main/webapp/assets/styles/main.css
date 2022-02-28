@@ -30,7 +30,7 @@ main {
     flex-direction: row;
 
     color: white;
-    font-family: "Open Sans";
+    font-family: "Open Sans", Helvetica;
 }
 
 main > section {
@@ -64,7 +64,7 @@ main > section > p, main > section > h1, main > section > h2 {
 }
 
 main > section > h1 {
-    font-family: "Summit Regular";
+    font-family: "Summit Regular", Helvetica;
 }
 
 form {

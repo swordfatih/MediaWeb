@@ -1,8 +1,5 @@
 package fr.mediaweb.persistance;
 
-import fr.mediaweb.persistance.DataManager;
-import fr.mediaweb.persistance.MediathequeDocument;
-import fr.mediaweb.persistance.MediathequeUtilisateur;
 import mediatek2022.Document;
 import mediatek2022.Utilisateur;
 
@@ -49,30 +46,15 @@ public class MySQLManager implements DataManager {
     @Override
     public Utilisateur getUser(String login, String password) throws SQLException {
         Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;");
+        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;");
         stmt.setString(1, login);
         stmt.setString(2, password);
 
-        return getUtilisateur(conn, stmt);
-    }
-
-    @Override
-    public Utilisateur getUser(int id) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `id_u`=?;");
-        stmt.setInt(1, id);
-
-        return getUtilisateur(conn, stmt);
-    }
-
-    private Utilisateur getUtilisateur(Connection conn, PreparedStatement stmt) throws SQLException {
         ResultSet res = stmt.executeQuery();
 
         MediathequeUtilisateur utilisateur = res.next() ? new MediathequeUtilisateur(res.getInt(1),
                 res.getString(2),
-                res.getString(3),
-                res.getString(4),
-                res.getString(5)) : null;
+                res.getString(3)) : null;
 
         res.close();
         stmt.close();
@@ -81,8 +63,7 @@ public class MySQLManager implements DataManager {
         return utilisateur;
     }
 
-    @Override
-    public Integer getUserID(String nomUtilisateur) throws SQLException {
+    private Integer getUserID(String nomUtilisateur) throws SQLException {
         Connection conn = getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT `id_u` FROM utilisateur WHERE `nom_u`=?;");
         stmt.setString(1, nomUtilisateur);
