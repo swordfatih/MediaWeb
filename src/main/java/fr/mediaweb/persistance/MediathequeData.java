@@ -3,7 +3,6 @@ package fr.mediaweb.persistance;
 import java.sql.SQLException;
 import java.util.List;
 
-import fr.mediaweb.database.MySQLManager;
 import mediatek2022.*;
 
 // classe mono-instance dont l'unique instance est connue de la médiatheque

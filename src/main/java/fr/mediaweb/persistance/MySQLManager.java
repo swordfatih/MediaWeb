@@ -1,4 +1,4 @@
-package fr.mediaweb.database;
+package fr.mediaweb.persistance;
 
 import fr.mediaweb.persistance.DataManager;
 import fr.mediaweb.persistance.MediathequeDocument;

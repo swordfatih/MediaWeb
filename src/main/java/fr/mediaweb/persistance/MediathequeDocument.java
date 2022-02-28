@@ -1,6 +1,5 @@
 package fr.mediaweb.persistance;
 
-import fr.mediaweb.database.MySQLManager;
 import mediatek2022.Document;
 import mediatek2022.Utilisateur;
 
