@@ -28,10 +28,8 @@ public class MySQLManager implements DataManager {
 
     @Override
     public List<Document> tousLesDocumentsDisponibles() throws SQLException {
-        final String req = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;";
-
         Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery(req);
+        ResultSet res = stmt.executeQuery("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;");
 
         List<Document> documents = new ArrayList<>();
         while (res.next()) documents.add(new MediathequeDocument(res.getInt(1), res.getString(2),
@@ -48,12 +46,22 @@ public class MySQLManager implements DataManager {
 
     @Override
     public Utilisateur getUser(String login, String password) throws SQLException {
-        final String req = "SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;";
-
-        PreparedStatement stmt = conn.prepareStatement(req);
+        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;");
         stmt.setString(1, login);
         stmt.setString(2, password);
 
+        return getUtilisateur(stmt);
+    }
+
+    @Override
+    public Utilisateur getUser(int id) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `login`, `mdp`, `type_u` FROM utilisateur WHERE `id_u`=?;");
+        stmt.setInt(1, id);
+
+        return getUtilisateur(stmt);
+    }
+
+    private Utilisateur getUtilisateur(PreparedStatement stmt) throws SQLException {
         ResultSet res = stmt.executeQuery();
 
         MediathequeUtilisateur utilisateur = res.next() ? new MediathequeUtilisateur(res.getInt(1),
@@ -69,10 +77,23 @@ public class MySQLManager implements DataManager {
     }
 
     @Override
-    public Document getDocument(int numDocument) throws SQLException {
-        final String req = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;";
+    public Integer getUserID(String nomUtilisateur) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u` FROM utilisateur WHERE `nom_u`=?;");
+        stmt.setString(1, nomUtilisateur);
 
-        PreparedStatement stmt = conn.prepareStatement(req);
+        ResultSet res = stmt.executeQuery();
+
+        Integer id = res.next() ? res.getInt(1) : null;
+
+        res.close();
+        stmt.close();
+
+        return id;
+    }
+
+    @Override
+    public Document getDocument(int numDocument) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;");
         stmt.setInt(1, numDocument);
 
         ResultSet res = stmt.executeQuery();
@@ -92,9 +113,7 @@ public class MySQLManager implements DataManager {
 
     @Override
     public void ajoutDocument(int type, Object... args) throws SQLException {
-        final String req = "INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);";
-
-        PreparedStatement stmt = conn.prepareStatement(req);
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);");
         stmt.setString(1, (String) args[0]);
         stmt.setString(2, (String) args[1]);
         stmt.setString(3, (String) args[2]);
@@ -104,22 +123,24 @@ public class MySQLManager implements DataManager {
     }
 
     @Override
-    public void emprunterDocument(int numDocument, String nomUtilisateur) throws SQLException {
-        String req = "UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;";
+    public int emprunterDocument(int numDocument, String nomUtilisateur) throws SQLException {
+        int id_u = getUserID(nomUtilisateur);
 
-        PreparedStatement stmt = conn.prepareStatement(req);
-        stmt.setString(1, nomUtilisateur);
+        // UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;
+
+        PreparedStatement stmt = conn.prepareStatement("UPDATE documen SET `emprunt_d`=? WHERE `id_d`=?;");
+        stmt.setInt(1, id_u);
         stmt.setInt(2, numDocument);
 
         stmt.execute();
         stmt.close();
+
+        return id_u;
     }
 
     @Override
     public void retournerDocument(int numDocument) throws SQLException {
-        String req = "UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;";
-
-        PreparedStatement stmt = conn.prepareStatement(req);
+        PreparedStatement stmt = conn.prepareStatement("UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;");
         stmt.setInt(1, numDocument);
 
         stmt.execute();

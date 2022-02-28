@@ -3,11 +3,11 @@ package fr.mediaweb.persistance;
 import mediatek2022.Utilisateur;
 
 public class MediathequeUtilisateur implements Utilisateur {
-    private int id;
-	private String nom;
-    private String login;
-    private String mdp;
-    private String type;
+    private final int id;
+	private final String nom;
+    private final String login;
+    private final String mdp;
+    private final String type;
 
     public MediathequeUtilisateur(int id, String nom, String login, String mdp, String type) {
         this.id = id;

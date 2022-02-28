@@ -42,10 +42,7 @@ public class Authentification extends HttpServlet {
         
         Utilisateur utilisateur = Mediatheque.getInstance().getUser(login, mdp);
         request.getSession().setAttribute("utilisateur", utilisateur);
-
-        if(utilisateur == null) {
-        	request.setAttribute("erreur", true);
-        }
+        request.setAttribute("erreur", utilisateur == null);
                
         doGet(request, response);
     }

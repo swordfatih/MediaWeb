@@ -37,13 +37,14 @@ public class MediathequeDocument implements Document {
 		if(!disponible())
 			throw new MediathequeException("Ce document est déjà emprunté");
 
-		bdd.emprunterDocument(this.id, utilisateur.name());
+		this.emprunt = bdd.emprunterDocument(this.id, utilisateur.name());
     }
 
     @Override
     public void retour() {
 		try {
 			bdd.retournerDocument(this.id);
+            this.emprunt = -1;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

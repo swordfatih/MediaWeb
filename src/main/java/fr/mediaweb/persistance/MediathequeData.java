@@ -14,7 +14,7 @@ public class MediathequeData implements PersistentMediatheque {
 		Mediatheque.getInstance().setData(new MediathequeData());
 	}
 
-	private DataManager bdd;
+	private final DataManager bdd;
 
 	private MediathequeData() {
 		bdd = new MySQLManager();
