@@ -10,6 +10,7 @@ import mediatek2022.Mediatheque;
 import mediatek2022.Utilisateur;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @WebServlet(name = "Gestionnaire", value = "/gest")
@@ -28,7 +29,7 @@ public class Gestionnaire extends HttpServlet {
         response.setContentType("text/html");
 
 		request.setAttribute("documentsDisponibles", Mediatheque.getInstance().tousLesDocumentsDisponibles().stream().filter(d -> d.disponible()).collect(Collectors.toList()));
-		request.setAttribute("documentsEmpruntes", utilisateur.data()[0]);
+		request.setAttribute("documentsEmpruntes", (List) utilisateur.data()[0]);
 
         RequestDispatcher view = request.getRequestDispatcher("view/" + (utilisateur.isBibliothecaire() ? "bibliothecaire" : "abonne") + ".jsp");
         view.forward(request, response);
