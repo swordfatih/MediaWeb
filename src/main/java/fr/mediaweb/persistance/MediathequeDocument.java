@@ -1,23 +1,24 @@
 package fr.mediaweb.persistance;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
+import fr.mediaweb.database.MySQLManager;
 import mediatek2022.Document;
 import mediatek2022.Utilisateur;
 
+import java.sql.SQLException;
+
 public class MediathequeDocument implements Document {
-	private int id;
-    private String titre;
-    private String auteur;
-    private String type;
+	private final DataManager bdd;
+
+	private final int id;
+    private final String titre;
+    private final String auteur;
+    private final String type;
     private int emprunt;
-    private String options;
+    private final String options;
 
     public MediathequeDocument(int id, String titre, String auteur, String type, int emprunt, String options) {
+		this.bdd = new MySQLManager();
+
         this.id = id;
     	this.titre = titre;
         this.auteur = auteur;
@@ -33,44 +34,18 @@ public class MediathequeDocument implements Document {
 
     @Override
     public void emprunt(Utilisateur utilisateur) throws Exception {
-    	String url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
-    	String user = "vmvo1438_mediaweb";
-    	String password = "mediaweb4568";
+		if(!disponible())
+			throw new MediathequeException("Ce document est déjà emprunté");
 
-    	Class.forName("com.mysql.cj.jdbc.Driver");
-    	Connection conn = DriverManager.getConnection(url, user, password);
-    	
-		String req = "UPDATE document, utilisateur SET `emprunt_d`=`id_u` WHERE `nom_u`=? AND `id_d`=?;";
-		
-		PreparedStatement stmt = conn.prepareStatement(req);
-		stmt.setString(1, utilisateur.name());
-		stmt.setInt(2, id);
-		
-		stmt.execute();
-
-		stmt.close();
+		bdd.emprunterDocument(this.id, utilisateur.name());
     }
 
     @Override
     public void retour() {
-    	String url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
-    	String user = "vmvo1438_mediaweb";
-    	String password = "mediaweb4568";
-
-    	try {
-			Class.forName("com.mysql.cj.jdbc.Driver");
-	    	Connection conn = DriverManager.getConnection(url, user, password);
-	    	
-			String req = "UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;";
-			
-			PreparedStatement stmt = conn.prepareStatement(req);
-			stmt.setInt(1, id);
-			
-			stmt.execute();
-
-			stmt.close();
-		} catch (Exception e) {
+		try {
+			bdd.retournerDocument(this.id);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }
