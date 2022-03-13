@@ -24,7 +24,7 @@
 			<form method="post">
 				<select name="id_d">
 					<c:forEach items="${ documentsDisponibles }" var="document" varStatus="status">
-						<option value="<c:out value="${ document.toString().substring(0, 1) }" />"><c:out value="${document.toString().substring(1)}" /></option>
+						<option value="<c:out value="${ document.toString().split(',', 2)[0] }" />"><c:out value="${ document.toString().split(',', 2)[1] }" /></option>
 					</c:forEach>
 				</select>
 				<input type="submit" name="emprunt" value="Emprunter"></input>
@@ -34,7 +34,7 @@
 			<form method="post">
 				<select name="id_d">
 					<c:forEach items="${ documentsEmpruntes }" var="document" varStatus="status">
-						<option value="<c:out value="${ document.toString().substring(0, 1) }" />"><c:out value="${document.toString().substring(1)}" /></option>
+						<option value="<c:out value="${ document.toString().split(',', 2)[0] }" />"><c:out value="${ document.toString().split(',', 2)[1] }" /></option>
 					</c:forEach>
 				</select>
 				<input type="submit" name="retour" value="Retourner"></input>

@@ -8,136 +8,138 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MySQLManager implements DataManager {
-    private static final String url = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
-    private static final String user = "vmvo1438_mediaweb";
-    private static final String password = "mediaweb4568";
+    private static final String URL = "jdbc:mysql://tijger.o2switch.net:3306/vmvo1438_mediaweb";
+    private static final String USER = "vmvo1438_mediaweb";
+    private static final String PASSWORD = "mediaweb4568";
 
-    public static Connection getConnection() {
+    private static final String QUERY_TOUS_DOCUMENTS = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;";
+    private static final String QUERY_RECUPERER_USER = "SELECT `id_u`, `nom_u`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;";
+    private static final String QUERY_RECUPERER_USER_ID = "SELECT `id_u` FROM utilisateur WHERE `nom_u`=?;";
+    private static final String QUERY_RECUPERER_DOCUMENT = "SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;";
+    private static final String QUERY_AJOUTER_DOCUMENT = "INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);";
+    private static final String QUERY_EMPRUNTER_DOCUMENT = "UPDATE document SET `emprunt_d`=? WHERE `id_d`=?;";
+    private static final String QUERY_RETOURNER_DOCUMENT = "UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;";
+
+    static {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(url, user, password);
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    @Override
+    public List<Document> tousLesDocumentsDisponibles() {
+        try (Connection conn = getConnection(); Statement stmt = conn.createStatement();
+            ResultSet res = stmt.executeQuery(QUERY_TOUS_DOCUMENTS);) {
+
+            List<Document> documents = new ArrayList<>();
+
+            while (res.next()) {
+                documents.add(new MediathequeDocument(res.getInt(1), res.getString(2),
+                    res.getString(3), res.getString(4), res.getInt(5),
+                    res.getString(6)));
+            }
+
+            return documents;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
         return null;
     }
 
     @Override
-    public List<Document> tousLesDocumentsDisponibles() throws SQLException {
-        Connection conn = getConnection();
-        Statement stmt = conn.createStatement();
-        ResultSet res = stmt.executeQuery("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document;");
+    public Utilisateur getUser(String login, String password) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_RECUPERER_USER);) {
+            stmt.setString(1, login);
+            stmt.setString(2, password);
 
-        List<Document> documents = new ArrayList<>();
-        while (res.next()) documents.add(new MediathequeDocument(res.getInt(1), res.getString(2),
-                res.getString(3),
-                res.getString(4),
-                res.getInt(5),
-                res.getString(6)));
+            try (ResultSet res = stmt.executeQuery();) {
+                return res.next() ? new MediathequeUtilisateur(res.getInt(1),
+                    res.getString(2),
+                    res.getString(3)) : null;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
-        res.close();
-        stmt.close();
-        conn.close();
+        return null;
+    }
 
-        return documents;
+    private Integer getUserID(String nomUtilisateur) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_RECUPERER_USER_ID);) {
+            stmt.setString(1, nomUtilisateur);
+
+            try (ResultSet res = stmt.executeQuery();) {
+                return res.next() ? res.getInt(1) : null;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
-    public Utilisateur getUser(String login, String password) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u`, `nom_u`, `type_u` FROM utilisateur WHERE `login`=? AND `mdp`=?;");
-        stmt.setString(1, login);
-        stmt.setString(2, password);
+    public Document getDocument(int numDocument) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_RECUPERER_DOCUMENT);) {
+            stmt.setInt(1, numDocument);
 
-        ResultSet res = stmt.executeQuery();
+            try (ResultSet res = stmt.executeQuery();) {
+                return res.next() ? new MediathequeDocument(res.getInt(1),
+                        res.getString(2),
+                        res.getString(3),
+                        res.getString(4),
+                        res.getInt(5),
+                        res.getString(6)) : null;
 
-        MediathequeUtilisateur utilisateur = res.next() ? new MediathequeUtilisateur(res.getInt(1),
-                res.getString(2),
-                res.getString(3)) : null;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
-        res.close();
-        stmt.close();
-        conn.close();
-
-        return utilisateur;
-    }
-
-    private Integer getUserID(String nomUtilisateur) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT `id_u` FROM utilisateur WHERE `nom_u`=?;");
-        stmt.setString(1, nomUtilisateur);
-
-        ResultSet res = stmt.executeQuery();
-
-        Integer id = res.next() ? res.getInt(1) : null;
-
-        res.close();
-        stmt.close();
-        conn.close();
-
-        return id;
+        return null;
     }
 
     @Override
-    public Document getDocument(int numDocument) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("SELECT `id_d`, `titre_d`, `auteur_d`, `type_d`, `emprunt_d`, `options_d` FROM document WHERE `id_d`=?;");
-        stmt.setInt(1, numDocument);
-
-        ResultSet res = stmt.executeQuery();
-
-        MediathequeDocument document = res.next() ? new MediathequeDocument(res.getInt(1),
-                res.getString(2),
-                res.getString(3),
-                res.getString(4),
-                res.getInt(5),
-                res.getString(6)) : null;
-
-        res.close();
-        stmt.close();
-        conn.close();
-
-        return document;
+    public void ajoutDocument(int type, Object... args) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_AJOUTER_DOCUMENT);) {
+            stmt.setString(1, (String) args[0]);
+            stmt.setString(2, (String) args[1]);
+            stmt.setString(3, (String) args[2]);
+            stmt.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     @Override
-    public void ajoutDocument(int type, Object... args) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO document (`titre_d`, `auteur_d`, `type_d`) VALUES (?, ?, ?);");
-        stmt.setString(1, (String) args[0]);
-        stmt.setString(2, (String) args[1]);
-        stmt.setString(3, (String) args[2]);
-
-        stmt.execute();
-        stmt.close();
-        conn.close();
-    }
-
-    @Override
-    public int emprunterDocument(int numDocument, String nomUtilisateur) throws SQLException {
+    public int emprunterDocument(int numDocument, String nomUtilisateur) {
         int id_u = getUserID(nomUtilisateur);
 
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("UPDATE document SET `emprunt_d`=? WHERE `id_d`=?;");
-        stmt.setInt(1, id_u);
-        stmt.setInt(2, numDocument);
-
-        stmt.execute();
-        stmt.close();
-        conn.close();
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_EMPRUNTER_DOCUMENT);) {
+            stmt.setInt(1, id_u);
+            stmt.setInt(2, numDocument);
+            stmt.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
         return id_u;
     }
 
     @Override
-    public void retournerDocument(int numDocument) throws SQLException {
-        Connection conn = getConnection();
-        PreparedStatement stmt = conn.prepareStatement("UPDATE document SET `emprunt_d`=-1 WHERE `id_d`=?;");
-        stmt.setInt(1, numDocument);
-
-        stmt.execute();
-        stmt.close();
-        conn.close();
+    public void retournerDocument(int numDocument) {
+        try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QUERY_RETOURNER_DOCUMENT);) {
+            stmt.setInt(1, numDocument);
+            stmt.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 }

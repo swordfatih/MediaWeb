@@ -3,8 +3,6 @@ package fr.mediaweb.persistance;
 import mediatek2022.Document;
 import mediatek2022.Utilisateur;
 
-import java.sql.SQLException;
-
 public class MediathequeDocument implements Document {
 	private final DataManager bdd;
 
@@ -32,31 +30,35 @@ public class MediathequeDocument implements Document {
 
     @Override
     public boolean disponible() {
-        return emprunt == -1;
+        synchronized (bdd) {
+            this.emprunt = ((MediathequeDocument) bdd.getDocument(this.id)).getEmprunt();
+            return this.emprunt == -1;
+        }
     }
 
     @Override
     public void emprunt(Utilisateur utilisateur) throws Exception {
-		if(!disponible())
-			throw new MediathequeException("Ce document est déjà emprunté");
+        synchronized (bdd) {
+		    if(!disponible())
+			    throw new MediathequeException("Ce document est déjà emprunté");
 
-		this.emprunt = bdd.emprunterDocument(this.id, utilisateur.name());
+            this.emprunt = bdd.emprunterDocument(this.id, utilisateur.name());
+        }
     }
 
     @Override
     public void retour() {
-		try {
-			bdd.retournerDocument(this.id);
+        synchronized (bdd) {
+            bdd.retournerDocument(this.id);
             this.emprunt = -1;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+        }
 	}
 
     public String toString() {
         StringBuilder affichage = new StringBuilder();
 
         affichage.append(id);
+        affichage.append(",");
         affichage.append("[");
         affichage.append(type);
         affichage.append("] ");

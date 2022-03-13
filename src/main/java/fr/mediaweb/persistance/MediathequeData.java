@@ -1,6 +1,5 @@
 package fr.mediaweb.persistance;
 
-import java.sql.SQLException;
 import java.util.List;
 
 import mediatek2022.*;
@@ -9,7 +8,8 @@ import mediatek2022.*;
 // via une auto-déclaration dans son bloc static
 
 public class MediathequeData implements PersistentMediatheque {
-	static { // Initialisation de mediatheque
+	static {
+		// Initialisation de mediatheque
 		Mediatheque.getInstance().setData(new MediathequeData());
 	}
 
@@ -22,11 +22,8 @@ public class MediathequeData implements PersistentMediatheque {
 	// renvoie la liste de tous les documents disponibles de la médiathèque
 	@Override
 	public List<Document> tousLesDocumentsDisponibles() {
-		try {
+		synchronized (bdd) {
 			return bdd.tousLesDocumentsDisponibles();
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 
@@ -34,11 +31,8 @@ public class MediathequeData implements PersistentMediatheque {
 	// si pas trouvé, renvoie null
 	@Override
 	public Utilisateur getUser(String login, String password) {
-		try {
+		synchronized (bdd) {
 			return bdd.getUser(login, password);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 
@@ -47,20 +41,15 @@ public class MediathequeData implements PersistentMediatheque {
 	// si pas trouvé, renvoie null
 	@Override
 	public Document getDocument(int numDocument) {
-		try {
+		synchronized (bdd) {
 			return bdd.getDocument(numDocument);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
 		}
 	}
 
 	@Override
 	public void ajoutDocument(int type, Object... args) {
-		try {
-			bdd.ajoutDocument(type, args);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		synchronized (bdd) {
+			bdd.ajoutDocument(type, args);;
 		}
 	}
 }
