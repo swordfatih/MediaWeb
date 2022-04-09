@@ -1,4 +1,4 @@
-# Projet Bogoss
+# School Project - MediaWeb
 
 # Build
 mvn clean package && docker build -t fr.mediaweb/MediaWeb .
